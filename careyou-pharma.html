@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CareYou Pharma</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1a6b4a;
+    --green-light: #2d9b6e;
+    --green-pale: #e8f5ef;
+    --gold: #c9a84c;
+    --white: #ffffff;
+    --off-white: #f8faf9;
+    --text: #1c2b22;
+    --muted: #6b7f73;
+    --border: #d4e6db;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5%;
+    height: 68px;
+  }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem; font-weight: 700;
+    color: var(--green);
+    text-decoration: none;
+    letter-spacing: -0.5px;
+  }
+  .logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    text-decoration: none; color: var(--text);
+    font-size: 0.9rem; font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--green); }
+  .cart-btn {
+    background: var(--green);
+    color: white;
+    border: none; cursor: pointer;
+    padding: 0.5rem 1.2rem;
+    border-radius: 50px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem; font-weight: 500;
+    display: flex; align-items: center; gap: 0.5rem;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .cart-btn:hover { background: var(--green-light); transform: scale(1.03); }
+  .cart-count {
+    background: var(--gold); color: white;
+    border-radius: 50%; width: 20px; height: 20px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 700;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    margin-top: 68px;
+    min-height: 88vh;
+    background: linear-gradient(135deg, #0f3d27 0%, #1a6b4a 50%, #2d9b6e 100%);
+    display: flex; align-items: center;
+    padding: 4rem 5%;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 600px; }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(201,168,76,0.2);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 0.35rem 1rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    font-weight: 700;
+    color: white;
+    line-height: 1.15;
+    margin-bottom: 1.2rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  .hero h1 em { color: var(--gold); font-style: normal; }
+  .hero p {
+    color: rgba(255,255,255,0.78);
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+  .hero-btns {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+  .btn-primary {
+    background: var(--gold);
+    color: white;
+    padding: 0.85rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(201,168,76,0.4);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(201,168,76,0.5); }
+  .btn-outline {
+    border: 2px solid rgba(255,255,255,0.5);
+    color: white;
+    padding: 0.85rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-outline:hover { border-color: white; background: rgba(255,255,255,0.1); }
+
+  .hero-stats {
+    position: absolute; right: 5%; bottom: 3rem;
+    display: flex; gap: 2.5rem;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem; font-weight: 700;
+    color: var(--gold);
+  }
+  .stat-label { color: rgba(255,255,255,0.6); font-size: 0.8rem; margin-top: 0.2rem; }
+
+  /* ── SECTIONS ── */
+  section { padding: 5rem 5%; }
+
+  .section-label {
+    color: var(--green);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+  .section-sub {
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.7;
+    max-width: 520px;
+  }
+
+  /* ── PRODUCTS ── */
+  #products { background: var(--off-white); }
+  .products-header { margin-bottom: 3rem; }
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+  .product-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: transform 0.25s, box-shadow 0.25s;
+    cursor: pointer;
+  }
+  .product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(26,107,74,0.12);
+  }
+  .product-img {
+    width: 100%; height: 200px;
+    object-fit: cover;
+    background: var(--green-pale);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 4rem;
+  }
+  .product-body { padding: 1.25rem; }
+  .product-cat {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--green);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.4rem;
+  }
+  .product-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    color: var(--text);
+  }
+  .product-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+  .product-footer {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .product-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--green);
+  }
+  .add-btn {
+    background: var(--green);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .add-btn:hover { background: var(--green-light); transform: scale(1.05); }
+  .add-btn:active { transform: scale(0.97); }
+
+  /* ── ABOUT ── */
+  #about {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+  .about-visual {
+    background: linear-gradient(135deg, var(--green-pale), #c8e6d8);
+    border-radius: 24px;
+    height: 420px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 8rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .about-visual::after {
+    content: '+';
+    position: absolute;
+    font-size: 20rem;
+    color: rgba(26,107,74,0.05);
+    font-weight: 900;
+    right: -40px;
+    bottom: -60px;
+    line-height: 1;
+  }
+  .about-features { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+  .feature-item {
+    display: flex; gap: 1rem; align-items: flex-start;
+    padding: 1rem;
+    background: var(--off-white);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+  .feature-icon {
+    width: 40px; height: 40px;
+    background: var(--green-pale);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+  .feature-text h4 { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.2rem; }
+  .feature-text p { color: var(--muted); font-size: 0.85rem; line-height: 1.5; }
+
+  /* ── CART SIDEBAR ── */
+  .cart-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,0.4);
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .cart-overlay.open { opacity: 1; pointer-events: all; }
+  .cart-sidebar {
+    position: fixed; right: 0; top: 0; bottom: 0; z-index: 201;
+    width: min(420px, 100vw);
+    background: white;
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+    display: flex; flex-direction: column;
+  }
+  .cart-sidebar.open { transform: translateX(0); }
+  .cart-head {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .cart-head h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+  }
+  .close-btn {
+    background: none; border: none; cursor: pointer;
+    font-size: 1.5rem; color: var(--muted);
+    transition: color 0.2s;
+  }
+  .close-btn:hover { color: var(--text); }
+  .cart-items { flex: 1; overflow-y: auto; padding: 1.5rem; }
+  .cart-empty {
+    text-align: center; padding: 3rem 1rem;
+    color: var(--muted); font-size: 0.95rem;
+  }
+  .cart-empty .empty-icon { font-size: 3rem; margin-bottom: 1rem; }
+  .cart-item {
+    display: flex; gap: 1rem; align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .cart-item-icon {
+    width: 56px; height: 56px;
+    background: var(--green-pale);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem; flex-shrink: 0;
+  }
+  .cart-item-info { flex: 1; }
+  .cart-item-name { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.2rem; }
+  .cart-item-price { color: var(--green); font-weight: 600; font-size: 0.9rem; }
+  .cart-item-qty {
+    display: flex; align-items: center; gap: 0.5rem;
+    margin-top: 0.4rem;
+  }
+  .qty-btn {
+    width: 26px; height: 26px;
+    border: 1px solid var(--border);
+    background: white; border-radius: 6px;
+    cursor: pointer; font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+  }
+  .qty-btn:hover { background: var(--green-pale); }
+  .qty-num { font-weight: 600; min-width: 20px; text-align: center; font-size: 0.9rem; }
+  .remove-item {
+    background: none; border: none; cursor: pointer;
+    color: #e05; font-size: 1.1rem; padding: 0.25rem;
+    transition: transform 0.15s;
+  }
+  .remove-item:hover { transform: scale(1.2); }
+  .cart-foot {
+    padding: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .cart-total {
+    display: flex; justify-content: space-between;
+    align-items: center; margin-bottom: 1rem;
+  }
+  .cart-total span { font-size: 1rem; color: var(--muted); }
+  .cart-total strong {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; color: var(--green);
+  }
+  .checkout-wa {
+    display: flex;
+    align-items: center; justify-content: center;
+    gap: 0.6rem;
+    background: #25D366;
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.2s, transform 0.1s;
+    text-decoration: none;
+  }
+  .checkout-wa:hover { background: #1ebe5d; transform: translateY(-1px); }
+
+  /* ── WHATSAPP FLOAT ── */
+  .wa-float {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 150;
+    background: #25D366;
+    color: white;
+    width: 58px; height: 58px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.45);
+    transition: transform 0.2s, box-shadow 0.2s;
+    animation: pulse 2.5s infinite;
+  }
+  .wa-float:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 30px rgba(37,211,102,0.55);
+    animation: none;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--text);
+    color: rgba(255,255,255,0.7);
+    padding: 3rem 5%;
+    text-align: center;
+  }
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: white;
+    margin-bottom: 0.75rem;
+  }
+  .footer-logo span { color: var(--gold); }
+  footer p { font-size: 0.9rem; line-height: 1.7; }
+  .footer-links { margin-top: 1.5rem; display: flex; justify-content: center; gap: 2rem; }
+  .footer-links a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+  .footer-links a:hover { color: white; }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed; bottom: 6rem; left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--text);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    font-size: 0.9rem; font-weight: 500;
+    z-index: 300;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 4px 20px rgba(37,211,102,0.45); }
+    50% { box-shadow: 0 4px 32px rgba(37,211,102,0.7); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hero-stats { position: static; margin-top: 2.5rem; }
+    .hero { flex-direction: column; }
+    #about { grid-template-columns: 1fr; }
+    .about-visual { height: 200px; font-size: 5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="#">CareYou <span>Pharma</span></a>
+  <ul class="nav-links">
+    <li><a href="#products">Products</a></li>
+    <li><a href="#about">About Us</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="cart-btn" onclick="openCart()">
+    🛒 Cart <span class="cart-count" id="cartCount">0</span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">✦ Trusted Healthcare</div>
+    <h1>Your Health,<br>Our <em>Priority</em></h1>
+    <p>Quality medicines and healthcare products delivered with care. Browse our trusted selection and order easily via WhatsApp.</p>
+    <div class="hero-btns">
+      <a href="#products" class="btn-primary">Shop Now</a>
+      <a href="https://wa.me/66661686485" target="_blank" class="btn-outline">💬 WhatsApp Us</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Authentic</div></div>
+    <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Support</div></div>
+    <div class="stat"><div class="stat-num">Fast</div><div class="stat-label">Delivery</div></div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products">
+  <div class="products-header">
+    <div class="section-label">Our Range</div>
+    <h2 class="section-title">Healthcare Products</h2>
+    <p class="section-sub">All products are authentic and sourced from certified suppliers. Add to cart and order via WhatsApp.</p>
+  </div>
+  <div class="products-grid" id="productsGrid"></div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-visual">💊</div>
+  <div>
+    <div class="section-label">Who We Are</div>
+    <h2 class="section-title">CareYou Pharma</h2>
+    <p class="section-sub">We are a dedicated healthcare provider committed to bringing you genuine, high-quality medicines and health products. Your well-being is at the heart of everything we do.</p>
+    <div class="about-features">
+      <div class="feature-item">
+        <div class="feature-icon">✅</div>
+        <div class="feature-text">
+          <h4>100% Authentic Products</h4>
+          <p>All items are sourced directly from certified and licensed suppliers.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🚀</div>
+        <div class="feature-text">
+          <h4>Fast & Reliable Delivery</h4>
+          <p>We ensure your healthcare essentials arrive promptly and safely.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">💬</div>
+        <div class="feature-text">
+          <h4>Expert Support</h4>
+          <p>Our team is available on WhatsApp to answer your questions anytime.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="footer-logo">CareYou <span>Pharma</span></div>
+  <p>Your trusted partner for quality medicines & healthcare products.<br>
+  📞 WhatsApp: <a href="https://wa.me/66661686485" style="color:var(--gold);">+66 66 168 6485</a></p>
+  <div class="footer-links">
+    <a href="#products">Products</a>
+    <a href="#about">About</a>
+    <a href="https://wa.me/66661686485" target="_blank">WhatsApp</a>
+  </div>
+  <p style="margin-top:2rem; font-size:0.8rem; opacity:0.4;">© 2026 CareYou Pharma. All rights reserved.</p>
+</footer>
+
+<!-- CART SIDEBAR -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-head">
+    <h2>🛒 Your Cart</h2>
+    <button class="close-btn" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty"><div class="empty-icon">🛍️</div>Your cart is empty</div>
+  </div>
+  <div class="cart-foot" id="cartFoot" style="display:none">
+    <div class="cart-total">
+      <span>Total</span>
+      <strong id="cartTotal">฿0</strong>
+    </div>
+    <a id="waCheckout" href="#" target="_blank" class="checkout-wa">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.558 4.114 1.533 5.842L.057 23.5l5.797-1.519A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.891 0-3.665-.513-5.188-1.407l-.371-.221-3.844 1.007 1.026-3.743-.242-.385A9.972 9.972 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+      Order via WhatsApp
+    </a>
+  </div>
+</div>
+
+<!-- WHATSAPP FLOAT -->
+<a href="https://wa.me/66661686485" target="_blank" class="wa-float" title="Chat on WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.558 4.114 1.533 5.842L.057 23.5l5.797-1.519A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.891 0-3.665-.513-5.188-1.407l-.371-.221-3.844 1.007 1.026-3.743-.242-.385A9.972 9.972 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+</a>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // ── PRODUCTS DATA ──
+  const products = [
+    { id:1, icon:'💊', name:'Pain Relief Tablets', cat:'Pain Management', desc:'Fast-acting relief for headaches, body pain & fever. 500mg, pack of 20.', price:120 },
+    { id:2, icon:'🌡️', name:'Digital Thermometer', cat:'Medical Devices', desc:'Accurate & fast digital thermometer for adults and children.', price:350 },
+    { id:3, icon:'🩺', name:'Blood Pressure Monitor', cat:'Medical Devices', desc:'Automatic upper arm BP monitor with memory function.', price:1200 },
+    { id:4, icon:'💉', name:'Vitamin C 1000mg', cat:'Vitamins', desc:'High-dose Vitamin C for immune support. 30 tablets per pack.', price:180 },
+    { id:5, icon:'🧴', name:'Antiseptic Solution', cat:'First Aid', desc:'Kills 99.9% of germs. Suitable for wound cleaning and hygiene.', price:95 },
+    { id:6, icon:'😷', name:'Surgical Face Masks', cat:'Protection', desc:'3-ply disposable face masks. Box of 50 pieces.', price:150 },
+    { id:7, icon:'🩹', name:'Sterile Bandages', cat:'First Aid', desc:'Assorted sizes sterile wound dressings. Pack of 30.', price:85 },
+    { id:8, icon:'💧', name:'Oral Rehydration Salts', cat:'Healthcare', desc:'Electrolyte solution for dehydration & diarrhoea. 10 sachets.', price:60 },
+  ];
+
+  // ── CART STATE ──
+  let cart = {};
+
+  // ── RENDER PRODUCTS ──
+  const grid = document.getElementById('productsGrid');
+  products.forEach(p => {
+    grid.innerHTML += `
+      <div class="product-card">
+        <div class="product-img">${p.icon}</div>
+        <div class="product-body">
+          <div class="product-cat">${p.cat}</div>
+          <div class="product-name">${p.name}</div>
+          <div class="product-desc">${p.desc}</div>
+          <div class="product-footer">
+            <div class="product-price">฿${p.price}</div>
+            <button class="add-btn" onclick="addToCart(${p.id})">+ Add</button>
+          </div>
+        </div>
+      </div>`;
+  });
+
+  // ── CART FUNCTIONS ──
+  function addToCart(id) {
+    cart[id] = (cart[id] || 0) + 1;
+    updateCartUI();
+    showToast('✅ Added to cart!');
+  }
+
+  function removeFromCart(id) {
+    delete cart[id];
+    updateCartUI();
+  }
+
+  function changeQty(id, delta) {
+    cart[id] = (cart[id] || 0) + delta;
+    if (cart[id] <= 0) delete cart[id];
+    updateCartUI();
+  }
+
+  function updateCartUI() {
+    const ids = Object.keys(cart);
+    const totalItems = ids.reduce((s, id) => s + cart[id], 0);
+    document.getElementById('cartCount').textContent = totalItems;
+
+    const itemsEl = document.getElementById('cartItems');
+    const footEl  = document.getElementById('cartFoot');
+
+    if (ids.length === 0) {
+      itemsEl.innerHTML = '<div class="cart-empty"><div class="empty-icon">🛍️</div>Your cart is empty</div>';
+      footEl.style.display = 'none';
+      return;
+    }
+
+    let html = '';
+    let total = 0;
+    let waMsg = 'Hello CareYou Pharma! I would like to order:\n';
+
+    ids.forEach(id => {
+      const p = products.find(x => x.id == id);
+      const qty = cart[id];
+      const sub = p.price * qty;
+      total += sub;
+      waMsg += `- ${p.name} x${qty} = ฿${sub}\n`;
+      html += `
+        <div class="cart-item">
+          <div class="cart-item-icon">${p.icon}</div>
+          <div class="cart-item-info">
+            <div class="cart-item-name">${p.name}</div>
+            <div class="cart-item-price">฿${p.price} each</div>
+            <div class="cart-item-qty">
+              <button class="qty-btn" onclick="changeQty(${id},-1)">−</button>
+              <span class="qty-num">${qty}</span>
+              <button class="qty-btn" onclick="changeQty(${id},1)">+</button>
+            </div>
+          </div>
+          <button class="remove-item" onclick="removeFromCart(${id})" title="Remove">🗑</button>
+        </div>`;
+    });
+
+    waMsg += `\nTotal: ฿${total}\nPlease confirm availability and delivery. Thank you!`;
+
+    itemsEl.innerHTML = html;
+    document.getElementById('cartTotal').textContent = '฿' + total;
+    document.getElementById('waCheckout').href = `https://wa.me/66661686485?text=${encodeURIComponent(waMsg)}`;
+    footEl.style.display = 'block';
+  }
+
+  function openCart() {
+    document.getElementById('cartOverlay').classList.add('open');
+    document.getElementById('cartSidebar').classList.add('open');
+  }
+  function closeCart() {
+    document.getElementById('cartOverlay').classList.remove('open');
+    document.getElementById('cartSidebar').classList.remove('open');
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  }
+</script>
+</body>
+</html>
